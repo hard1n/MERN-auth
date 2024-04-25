@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const port = process.env.PORT || 8000;
+// IMPORT ROUTES
+const userRoutes = require("./routes/user");
 
 // CONNECT DATABASE
 mongoose
@@ -10,13 +12,10 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-  // console.log("Hello from server!");
-  res.send("Hello from server!");
-  // next();
-});
+// MIDDLEWARES
+app.use("/api", userRoutes);
 
-// app listening port
+// APP LISTENING PORT
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
 });
