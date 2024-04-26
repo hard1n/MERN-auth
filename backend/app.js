@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const port = process.env.PORT || 8000;
+const mongoose = require("mongoose");
+const morgan = require("morgan");
 // IMPORT ROUTES
 const userRoutes = require("./routes/user");
 
@@ -12,7 +13,12 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
-// MIDDLEWARES
+/* MIDDLEWARES */
+// parse JSON bodies
+app.use(morgan("dev"));
+app.use(express.json());
+
+// ROUTES MIDDLEWARE
 app.use("/api", userRoutes);
 
 // APP LISTENING PORT
