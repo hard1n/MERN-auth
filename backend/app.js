@@ -4,10 +4,10 @@ const app = express();
 const port = process.env.PORT || 8000;
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-// IMPORT ROUTES
+/* IMPORT ROUTES */
 const userRoutes = require("./routes/user");
 
-// CONNECT DATABASE
+/* CONNECT DATABASE */
 mongoose
   .connect(process.env.DATABASE)
   .then(() => console.log("DB connected"))
@@ -18,10 +18,10 @@ mongoose
 app.use(morgan("dev"));
 app.use(express.json());
 
-// ROUTES MIDDLEWARE
+/* ROUTES MIDDLEWARE */
 app.use("/api", userRoutes);
 
-// APP LISTENING PORT
+/* APP LISTENING PORT */
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
 });
