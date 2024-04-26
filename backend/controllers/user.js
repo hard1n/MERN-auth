@@ -12,10 +12,11 @@ exports.signup = async (req, res, next) => {
     });
   }
 
-  console.log("req.body:", req.body);
   try {
+    // console.log("req.body", req.body);
+    // req.body.password = bcrypt.hashSync(req.body.password, 8);
+    // console.log("Clave:", req.body.password);
     const user = await User.create(req.body);
-    console.log("req.body", req.body);
     res.status(201).json({
       success: true,
       user,
