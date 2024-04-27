@@ -60,10 +60,12 @@ exports.signin = async (req, res, next) => {
       });
     }
 
+    const token = await user.jwtGenerate();
+
     /* OK STATUS */
     res.status(200).json({
       success: true,
-      user,
+      token,
     });
   } catch (error) {
     console.log(error);
