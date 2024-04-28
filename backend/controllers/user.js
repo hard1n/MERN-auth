@@ -1,11 +1,5 @@
 const User = require("../models/users");
 
-// const newDate = new Date();
-// console.log(
-//   "Expires:",
-//   newDate.getTime(Date.now() + parseInt(process.env.EXPIRE_TOKEN))
-// );
-
 const generateToken = async (user, statusCode, res) => {
   const token = await user.jwtGenerate();
   const options = {
@@ -81,10 +75,6 @@ exports.signin = async (req, res, next) => {
 
     /* OK STATUS */
     generateToken(user, 200, res);
-    // res.status(200).json({
-    //   success: true,
-    //   token,
-    // });
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -93,5 +83,14 @@ exports.signin = async (req, res, next) => {
     });
   }
 
+  next();
+};
+
+exports.logout = (req, res, next) => {
+  res.clearCookie("token");
+  res.status(200).json({
+    success: true,
+    message: "Logged out sucessfully",
+  });
   next();
 };
