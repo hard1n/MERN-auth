@@ -10,3 +10,4 @@ In this project I got my hands on:
 - **Mongoose** to create the data modeling.
 - **bcryptJS** to encrypt passwords before storing them.
 - **JsonWebToken** to generate a token when the user sing in.
+- **Cookie-Parser** to generata a cookie when login.

@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 /* IMPORT ROUTES */
 const userRoutes = require("./routes/user");
 
@@ -17,6 +18,7 @@ mongoose
 // parse JSON bodies
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
 
 /* ROUTES MIDDLEWARE */
 app.use("/api", userRoutes);

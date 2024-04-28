@@ -1,5 +1,24 @@
 const User = require("../models/users");
 
+// const newDate = new Date();
+// console.log(
+//   "Expires:",
+//   newDate.getTime(Date.now() + parseInt(process.env.EXPIRE_TOKEN))
+// );
+
+const generateToken = async (user, statusCode, res) => {
+  const token = await user.jwtGenerate();
+  const options = {
+    httpOnly: true,
+    expires: new Date(Date.now() + parseInt(process.env.EXPIRE_TOKEN)),
+  };
+
+  res
+    .status(statusCode)
+    .cookie("token", token, options)
+    .json({ success: true, token });
+};
+
 exports.signup = async (req, res, next) => {
   const { email } = req.body;
   /* SEARCH USER IN DB -> returns null if not found */
@@ -60,13 +79,12 @@ exports.signin = async (req, res, next) => {
       });
     }
 
-    const token = await user.jwtGenerate();
-
     /* OK STATUS */
-    res.status(200).json({
-      success: true,
-      token,
-    });
+    generateToken(user, 200, res);
+    // res.status(200).json({
+    //   success: true,
+    //   token,
+    // });
   } catch (error) {
     console.log(error);
     res.status(400).json({
