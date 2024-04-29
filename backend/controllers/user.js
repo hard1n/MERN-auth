@@ -94,3 +94,16 @@ exports.logout = (req, res, next) => {
   });
   next();
 };
+
+exports.singleUser = async (req, res, next) => {
+  try {
+    /* GETTING USER BY ID */
+    const user = await User.findById(req.params.id);
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

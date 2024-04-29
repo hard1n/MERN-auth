@@ -5,6 +5,7 @@ const port = process.env.PORT || 8000;
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./middlewares/error");
 /* IMPORT ROUTES */
 const userRoutes = require("./routes/user");
 
@@ -22,6 +23,9 @@ app.use(cookieParser());
 
 /* ROUTES MIDDLEWARE */
 app.use("/api", userRoutes);
+
+/* ERROR MIDDLEWARE */
+app.use(errorHandler);
 
 /* APP LISTENING PORT */
 app.listen(port, () => {
