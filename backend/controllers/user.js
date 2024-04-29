@@ -1,4 +1,5 @@
 const User = require("../models/users");
+const ErrorResponse = require("../utils/error_response");
 
 const generateToken = async (user, statusCode, res) => {
   const token = await user.jwtGenerate();
@@ -20,10 +21,9 @@ exports.signup = async (req, res, next) => {
 
   /* VALIDATING IF EMAIL EXISTS */
   if (userExists) {
-    return res.status(400).json({
-      success: false,
-      message: "E-mail already exist, use a different one",
-    });
+    return next(
+      new ErrorResponse("E-mail already exist, use a different one", 400)
+    );
   }
 
   try {
@@ -35,10 +35,7 @@ exports.signup = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
+    return next(new ErrorResponse(error.message, 400));
   }
 
   next();
@@ -49,38 +46,26 @@ exports.signin = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "E-Mail and password are required",
-      });
+      return next(new ErrorResponse("E-Mail and password are required", 400));
     }
 
     /* SEARCH USER IN DB BY EMAIL */
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid credentials",
-      });
+      return next(new ErrorResponse("Invalid credentials", 400));
     }
 
     /* VALIDATING PASSWORD */
     const isPassword = await user.comparePassword(password);
     if (!isPassword) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid credentials",
-      });
+      return next(new ErrorResponse("Invalid credentials", 400));
     }
 
     /* OK STATUS */
     generateToken(user, 200, res);
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
+    return next(new ErrorResponse(error.message, 400));
   }
 
   next();
@@ -104,6 +89,9 @@ exports.singleUser = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    next(error);
+    console.log(error);
+    next(
+      new ErrorResponse(`User with id: ${req.params.id} was not found`, 404)
+    );
   }
 };
