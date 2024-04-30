@@ -20,11 +20,11 @@ exports.signup = async (req, res, next) => {
   const userExists = await User.findOne({ email });
 
   /* VALIDATING IF EMAIL EXISTS */
-  if (userExists) {
-    return next(
-      new ErrorResponse("E-mail already exist, use a different one", 400)
-    );
-  }
+  // if (userExists) {
+  //   return next(
+  //     new ErrorResponse("E-mail already exist, use a different one", 400)
+  //   );
+  // }
 
   try {
     /* CREATING USER */
@@ -35,7 +35,7 @@ exports.signup = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    return next(new ErrorResponse(error.message, 400));
+    return next(error);
   }
 
   next();
@@ -90,8 +90,6 @@ exports.singleUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    next(
-      new ErrorResponse(`User with id: ${req.params.id} was not found`, 404)
-    );
+    next(error);
   }
 };
