@@ -11,3 +11,7 @@ In this project I got my hands on:
 - **bcryptJS** to encrypt passwords before storing them.
 - **JsonWebToken** to generate a token when the user sing in.
 - **Cookie-Parser** to generata a cookie for the session.
+- **React + Vite** for the frontend.
+- **Material Design for Bootstrap (MDB)** for the stylesl.
+- **CORS** used as a middleware to eneble requests from frontend to backend.
+- **Axios** for http requests handling.

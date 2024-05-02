@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error");
+const cors = require("cors");
 /* IMPORT ROUTES */
 const userRoutes = require("./routes/user");
 
@@ -20,6 +21,7 @@ mongoose
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 /* ROUTES MIDDLEWARE */
 app.use("/api", userRoutes);
