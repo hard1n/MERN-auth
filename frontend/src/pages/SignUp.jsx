@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -10,8 +13,6 @@ const SignUp = () => {
   });
 
   const { name, email, password } = values;
-
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -40,10 +41,9 @@ const SignUp = () => {
       }
     } catch (err) {
       console.log(err.response.data);
-      // handleError(error);
       toast.error(err.response.data.error);
-      setErrorMessage(err.response.data.error);
       // if (err.response && err.response.data && err.response.data.error) {
+      //   setErrorMessage(err.response.data.error);
       // } else {
       //   setErrorMessage("An unexpected error occurred.");
       // }
@@ -52,8 +52,9 @@ const SignUp = () => {
 
   return (
     <>
+      <Header />
       <div className="container form-container pt-5">
-        <h2 className="text-primary">JOIN TODAY</h2>
+        <h2 className="text-info">JOIN TODAY</h2>
         <form action="" className="mt-5 signup-form">
           <div className="form-floating mb-4">
             <input
@@ -103,17 +104,20 @@ const SignUp = () => {
           <button
             onClick={handleSubmit}
             type="submit"
-            className="btn btn-primary btn-block mb-4"
+            className="btn btn-info btn-block mb-4 fs-6"
           >
             Register
           </button>
-          {/* <input
-            type="submit"
-            className="btn btn-primary btn-block mb-4"
-            value="Register"
-          /> */}
+          <hr />
+          <p>
+            Already have an account ?{" "}
+            <Link className="text-info" to="/signin">
+              Log In
+            </Link>
+          </p>
         </form>
       </div>
+      <Footer />
     </>
   );
 };

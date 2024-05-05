@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
     error = new ErrorResponse(message, 404);
   }
 
-  console.log("Error code: ", err);
+  console.log("ErrorS: ", err);
   /** DUPLICATED USER **/
   if (err.code === 11000) {
     const message = "Duplicated field value entered, use a different E-mail";
@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
   /* NODE.JS ERRORS */
   res.status(error.status || 500).json({
     success: false,
-    error: error.message || "Server Error!",
+    error: err.message || "Server Error!",
   });
 };
 
