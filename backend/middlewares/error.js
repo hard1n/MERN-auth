@@ -10,10 +10,11 @@ const errorHandler = (err, req, res, next) => {
     error = new ErrorResponse(message, 404);
   }
 
+  console.log("Error code: ", err);
   /** DUPLICATED USER **/
   if (err.code === 11000) {
-    const message = "Duplicated field value entered";
-    error = new ErrorResponse(message, 404);
+    const message = "Duplicated field value entered, use a different E-mail";
+    error = new ErrorResponse(message, 400);
   }
 
   /** VALIDATIOR ERROR **/
@@ -23,7 +24,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   /* NODE.JS ERRORS */
-  return res.status(error.status || 500).json({
+  res.status(error.status || 500).json({
     success: false,
     error: error.message || "Server Error!",
   });

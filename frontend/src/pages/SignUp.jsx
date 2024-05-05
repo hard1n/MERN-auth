@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -9,6 +10,8 @@ const SignUp = () => {
   });
 
   const { name, email, password } = values;
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -33,16 +36,24 @@ const SignUp = () => {
           email: "",
           password: "",
         });
+        toast.success("Sign up successfully!");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err.response.data);
+      // handleError(error);
+      toast.error(err.response.data.error);
+      setErrorMessage(err.response.data.error);
+      // if (err.response && err.response.data && err.response.data.error) {
+      // } else {
+      //   setErrorMessage("An unexpected error occurred.");
+      // }
     }
   };
 
   return (
     <>
       <div className="container form-container pt-5">
-        <h2>JOIN TODAY</h2>
+        <h2 className="text-primary">JOIN TODAY</h2>
         <form action="" className="mt-5 signup-form">
           <div className="form-floating mb-4">
             <input
@@ -56,6 +67,9 @@ const SignUp = () => {
             <label htmlFor="input-name" className="form-label">
               Name
             </label>
+            {/* {errorMessage && (
+              <div className="invalid-feedback">{errorMessage}</div>
+            )} */}
           </div>
 
           <div className="form-floating mb-4">

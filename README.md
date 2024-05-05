@@ -15,3 +15,4 @@ In this project I got my hands on:
 - **Material Design for Bootstrap (MDB)** for the stylesl.
 - **CORS** used as a middleware to eneble requests from frontend to backend.
 - **Axios** for http requests handling.
+- **Toastify** for custom popup notifications.

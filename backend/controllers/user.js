@@ -38,7 +38,7 @@ exports.signup = async (req, res, next) => {
     return next(error);
   }
 
-  next();
+  // next();
 };
 
 exports.signin = async (req, res, next) => {
