@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error");
 const cors = require("cors");
 /* IMPORT ROUTES */
-const userRoutes = require("./routes/user");
+const userRoutes = require("./routes/auth");
 
 /* CONNECT DATABASE */
 mongoose
