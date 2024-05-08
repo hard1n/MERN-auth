@@ -1,6 +1,5 @@
 const User = require("../models/users");
 const ErrorResponse = require("../utils/error_response");
-
 const generateToken = async (user, statusCode, res) => {
   const token = await user.jwtGenerate();
   const options = {
@@ -20,15 +19,16 @@ exports.signup = async (req, res, next) => {
   const userExists = await User.findOne({ email });
 
   /* VALIDATING IF EMAIL EXISTS */
-  // if (userExists) {
-  //   return next(
-  //     new ErrorResponse("E-mail already exist, use a different one", 400)
-  //   );
-  // }
+  if (userExists) {
+    return next(
+      new ErrorResponse("E-mail already exist, use a different one", 400)
+    );
+  }
 
   try {
     /* CREATING USER */
     const user = await User.create(req.body);
+
     res.status(201).json({
       success: true,
       user,
@@ -38,7 +38,7 @@ exports.signup = async (req, res, next) => {
     return next(error);
   }
 
-  // next();
+  next();
 };
 
 exports.signin = async (req, res, next) => {
@@ -68,7 +68,7 @@ exports.signin = async (req, res, next) => {
     return next(new ErrorResponse(error.message, 400));
   }
 
-  next();
+  // next();
 };
 
 exports.logout = (req, res, next) => {
@@ -78,6 +78,17 @@ exports.logout = (req, res, next) => {
     message: "Logged out sucessfully",
   });
   next();
+};
+
+/* USER PROFILE */
+exports.userProfile = async (req, res, next) => {
+  console.log("Req: ", req.user);
+
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
 };
 
 exports.singleUser = async (req, res, next) => {
