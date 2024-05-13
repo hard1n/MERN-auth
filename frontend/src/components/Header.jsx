@@ -2,12 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  // console.log(isAuthenticated);
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <Link className="navbar-brand mt-2 mt-lg-0" to="/">
-            MERN STACK
+            MERN APP
           </Link>
           <button
             className="navbar-toggler"

@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error");
 const cors = require("cors");
+
 /* IMPORT ROUTES */
 const userRoutes = require("./routes/auth");
 
@@ -17,11 +18,10 @@ mongoose
   .catch((err) => console.log(err));
 
 /* MIDDLEWARES */
-// parse JSON bodies
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cookieParser());
-app.use(cors());
+app.use(cookieParser()); // parse JSON bodies
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 /* ROUTES MIDDLEWARE */
 app.use("/api", userRoutes);

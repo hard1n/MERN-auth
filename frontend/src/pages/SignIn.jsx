@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const SignUp = () => {
+const SignIn = () => {
+  let navigate = useNavigate();
+
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -19,22 +21,26 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const signUser = await axios.post("http://localhost:8000/api/signin", {
-        email,
-        password,
-      });
+      const signUser = await axios.post(
+        "http://localhost:8000/api/signin",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       // Debugging data
-      console.log(signUser.data);
-
+      // console.log(signUser.data);
       if (signUser.data.success === true) {
         setValues({
           email: "",
           password: "",
         });
         toast.success("WELCOM BACK!");
+
+        navigate("/user/profile");
       }
     } catch (err) {
       console.log(err.response.data);
@@ -98,4 +104,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

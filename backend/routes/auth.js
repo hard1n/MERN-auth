@@ -14,5 +14,9 @@ router.post("/signin", signin);
 router.get("/logout", logout);
 router.get("/getuser", isAuthenticated, userProfile);
 router.get("/user/:id", singleUser);
+router.get("/test", (req, res) => {
+  console.log(req.cookies);
+  res.send("OK");
+});
 
 module.exports = router;
