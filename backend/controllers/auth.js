@@ -1,18 +1,27 @@
 const User = require("../models/users");
 const ErrorResponse = require("../utils/error_response");
-const generateToken = async (user, statusCode, res) => {
-  const token = await user.jwtGenerate();
-  const options = {
-    httpOnly: true,
-    expires: new Date(Date.now() + parseInt(process.env.EXPIRE_TOKEN)),
-  };
 
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({ success: true, token });
+/* GENERATE TOKEN */
+const generateToken = async (user, res) => {
+  try {
+    const token = await user.jwtGenerate();
+    // const expireCookie = parseInt(process.env.EXPIRE_TOKEN);
+    const options = {
+      httpOnly: true,
+      expires: new Date(Date.now() + 3600),
+      // sameSite: "lax",
+      // secure: true,
+    };
+
+    res.cookie("token", token, options);
+    res.status(200).json({ success: true, token });
+  } catch (error) {
+    console.log(erorr);
+    return ErrorResponse("An error ocured in the server!", 500);
+  }
 };
 
+/* SIGN UP */
 exports.signup = async (req, res, next) => {
   const { email } = req.body;
   /* SEARCH USER IN DB -> returns null if not found */
@@ -41,6 +50,7 @@ exports.signup = async (req, res, next) => {
   next();
 };
 
+/* SIGN IN */
 exports.signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -52,25 +62,26 @@ exports.signin = async (req, res, next) => {
     /* SEARCH USER IN DB BY EMAIL */
     const user = await User.findOne({ email });
     if (!user) {
-      return next(new ErrorResponse("Invalid credentials", 400));
+      return next(new ErrorResponse("Invalid credentials", 401));
     }
 
     /* VALIDATING PASSWORD */
     const isPassword = await user.comparePassword(password);
     if (!isPassword) {
-      return next(new ErrorResponse("Invalid credentials", 400));
+      return next(new ErrorResponse("Invalid credentials", 401));
     }
 
     /* OK STATUS */
-    generateToken(user, 200, res);
+    generateToken(user, res);
   } catch (error) {
-    console.log(error);
-    return next(new ErrorResponse(error.message, 400));
+    console.error("Error generating token:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 
   // next();
 };
 
+/* LOG OUT */
 exports.logout = (req, res, next) => {
   res.clearCookie("token");
   res.status(200).json({
@@ -82,8 +93,6 @@ exports.logout = (req, res, next) => {
 
 /* USER PROFILE */
 exports.userProfile = async (req, res, next) => {
-  console.log("Req: ", req.user);
-
   const user = await User.findById(req.user.id);
   res.status(200).json({
     success: true,
@@ -91,6 +100,7 @@ exports.userProfile = async (req, res, next) => {
   });
 };
 
+/* ---TESTING---- */
 exports.singleUser = async (req, res, next) => {
   try {
     /* GETTING USER BY ID */
