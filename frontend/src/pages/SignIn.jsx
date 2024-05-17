@@ -41,6 +41,10 @@ const SignIn = () => {
         toast.success("WELCOM BACK!");
 
         navigate("/user/profile");
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", JSON.stringify(signUser.data));
+        }
       }
     } catch (err) {
       console.log(err.response.data);
