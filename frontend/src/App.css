@@ -16,3 +16,7 @@ form {
   width: 60%;
   margin: 0 auto;
 }
+
+.dropdown .dropdown-menu {
+  min-width: 7rem;
+}
