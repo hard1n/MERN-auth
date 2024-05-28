@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { AuthContext } from "../components/AuthContext";
 
 const SignIn = () => {
   let navigate = useNavigate();
@@ -34,6 +35,9 @@ const SignIn = () => {
       // Debugging data
       // console.log(signUser.data);
       if (signUser.data.success === true) {
+        // Save token to local storage
+        localStorage.setItem("token", signUser.data.token);
+
         setValues({
           email: "",
           password: "",
@@ -42,9 +46,10 @@ const SignIn = () => {
 
         navigate("/user/profile");
 
-        if (typeof window !== "undefined") {
-          localStorage.setItem("token", JSON.stringify(signUser.data));
-        }
+        // console.log("Token: ", localStorage.getItem("token"));
+        // if (typeof window !== "undefined") {
+        //   localStorage.setItem("token", JSON.stringify(signUser.data));
+        // }
       }
     } catch (err) {
       console.log(err.response.data);
